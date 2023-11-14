@@ -37,6 +37,10 @@ public class Card {
             case "9":
             case "10":
                 return Integer.parseInt(rank);
+            case "J":
+            case "Q":
+            case "K":
+                return 10;
             case "A":
                 return 11;
             default:

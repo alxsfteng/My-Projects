@@ -6,35 +6,46 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Deck deck = new Deck();
-        Hand playerHand = new Hand();
-        Hand dealerHand = new Hand();
+        Hand playerHand = new Hand(true); // Indicates player's hand
+        Hand dealerHand = new Hand(false); // Indicates dealer's hand
 
+        // Initial deal
         playerHand.addCard(deck.drawCard());
         dealerHand.addCard(deck.drawCard());
         playerHand.addCard(deck.drawCard());
         dealerHand.addCard(deck.drawCard());
 
+        // Show initial hands
         playerHand.displayHand(true);
         dealerHand.displayHand(false);
 
-        while (playerHand.calculateScore() <= 21) {
+        // Player's turn
+        while (true) {
             System.out.print("Do you want to hit or stand? (h/s): ");
             String choice = scanner.nextLine().toLowerCase();
 
             if (choice.equals("h")) {
                 playerHand.addCard(deck.drawCard());
                 playerHand.displayHand(true);
+                if (playerHand.calculateScore() > 21) {
+                    break;
+                }
             } else if (choice.equals("s")) {
                 break;
             }
         }
 
-        dealerHand.displayHand(true);
-        while (dealerHand.calculateScore() < 17) {
-            dealerHand.addCard(deck.drawCard());
+        // If the player hasn't busted, proceed to the dealer's turn
+        if (playerHand.calculateScore() <= 21) {
+            // Dealer's turn
             dealerHand.displayHand(true);
+            while (dealerHand.calculateScore() < 17) {
+                dealerHand.addCard(deck.drawCard());
+                dealerHand.displayHand(true);
+            }
         }
 
+        // Display final hands and determine the winner
         playerHand.displayHand(true);
         dealerHand.displayHand(true);
 
